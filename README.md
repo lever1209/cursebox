@@ -1,2 +1,2 @@
 # cursebox
-quark but for lighting and extra easily configurable options
+like quark but for lighting and extra easily configurable options
