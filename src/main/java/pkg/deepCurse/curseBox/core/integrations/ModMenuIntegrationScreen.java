@@ -30,6 +30,8 @@ public class ModMenuIntegrationScreen extends Screen {
 						CurseBox.LOGGER
 								.info("Config menu return button is pressed");
 					}
+					
+					
 
 					this.client.setScreen(this.parent);
 				}));
