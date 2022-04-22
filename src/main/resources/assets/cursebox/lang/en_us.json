@@ -1,0 +1,35 @@
+{
+	"cursebox.config.menu.title":"Config Menu",
+	
+	"cursebox.config.menu.fog.on":"Fog: ON",
+	"cursebox.config.menu.fog.off":"Fog: OFF",
+	
+	"cursebox.config.menu.debug.on":"Debug Logs: ON",
+	"cursebox.config.menu.debug.off":"Debug Logs: OFF",
+	
+	"cursebox.config.menu.attack.only.players.on":"Grues only attack players: ON",
+	"cursebox.config.menu.attack.only.players.off":"Grues only attack players: OFF",
+	
+	"cursebox.config.menu.reset.chance.on":"Force Grues to attack right away: ON",
+	"cursebox.config.menu.reset.chance.off":"Force Grues to attack right away: OFF",
+	
+	"cursebox.config.menu.supreme.debug.on":"Verbose Debug Logs: ON",
+	"cursebox.config.menu.supreme.debug.off":"Verbose Debug Logs: OFF",
+	
+	"cursebox.config.menu.fast.torches.on":"Torches burn faster: ON",
+	"cursebox.config.menu.fast.torches.off":"Torches burn faster: OFF",
+	
+	"death.attack.cursebox.darkness": "%1$s was eaten by a grue",
+	"death.attack.cursebox.darkness.player": "%1$s was forced into the darkness by %2$s and eaten by a grue",
+
+	"item.cursebox.useless_item": "Useless Item",
+	"item.cursebox.useless_block": "Useless Block",
+	"block.cursebox.textured_block": "Textured Block",
+	"item.cursebox.textured_block": "Textured Block",
+	
+	"item.cursebox.revenant_flint":"Flint and Soul",
+	
+	"cursebox.test.menu.title": "Test Menu: Title Screen",
+	"cursebox.test.menu.button": "Test Button",
+	"cursebox.menu.return": "Return"
+}
