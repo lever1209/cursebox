@@ -90,7 +90,7 @@ public class ModMenuIntegrationScreen extends Screen {
 					CurseBox.LOGGER.info("Changed value to: " + CurseBox.debug);
 				}));
 		String attackOnlyPlayersButtonStartingName;
-		if (CurseBox.attackOnlyPlayers) {
+		if (CurseBox.gruesOnlyAttackPlayers) {
 			attackOnlyPlayersButtonStartingName = "cursebox.config.menu.attack.only.players.on";
 		} else {
 			attackOnlyPlayersButtonStartingName = "cursebox.config.menu.attack.only.players.off";
@@ -104,21 +104,21 @@ public class ModMenuIntegrationScreen extends Screen {
 								"Config menu attack only players button is pressed");
 					}
 
-					if (CurseBox.attackOnlyPlayers) {
-						CurseBox.attackOnlyPlayers = false;
+					if (CurseBox.gruesOnlyAttackPlayers) {
+						CurseBox.gruesOnlyAttackPlayers = false;
 						buttonWidget.setMessage(new TranslatableText(
 								"cursebox.config.menu.attack.only.players.off"));
 					} else {
-						CurseBox.attackOnlyPlayers = true;
+						CurseBox.gruesOnlyAttackPlayers = true;
 						buttonWidget.setMessage(new TranslatableText(
 								"cursebox.config.menu.attack.only.players.on"));
 					}
 
 					CurseBox.LOGGER.info(
-							"Changed value to: " + CurseBox.attackOnlyPlayers);
+							"Changed value to: " + CurseBox.gruesOnlyAttackPlayers);
 				}));
 		String resetChanceButtonStartingName;
-		if (CurseBox.resetChance) {
+		if (CurseBox.resetGrueAttackChance) {
 			resetChanceButtonStartingName = "cursebox.config.menu.reset.chance.on";
 		} else {
 			resetChanceButtonStartingName = "cursebox.config.menu.reset.chance.off";
@@ -132,47 +132,20 @@ public class ModMenuIntegrationScreen extends Screen {
 								"Config menu reset chance button is pressed");
 					}
 
-					if (CurseBox.resetChance) {
-						CurseBox.resetChance = false;
+					if (CurseBox.resetGrueAttackChance) {
+						CurseBox.resetGrueAttackChance = false;
 						buttonWidget.setMessage(new TranslatableText(
 								"cursebox.config.menu.reset.chance.off"));
 					} else {
-						CurseBox.resetChance = true;
+						CurseBox.resetGrueAttackChance = true;
 						buttonWidget.setMessage(new TranslatableText(
 								"cursebox.config.menu.reset.chance.on"));
 					}
 
 					CurseBox.LOGGER
-							.info("Changed value to: " + CurseBox.resetChance);
+							.info("Changed value to: " + CurseBox.resetGrueAttackChance);
 				}));
-		String supremeDebugButtonStartingName;
-		if (CurseBox.supremeDebug) {
-			supremeDebugButtonStartingName = "cursebox.config.menu.supreme.debug.on";
-		} else {
-			supremeDebugButtonStartingName = "cursebox.config.menu.supreme.debug.off";
-		}
 
-		this.addDrawableChild(new ButtonWidget(14, 64, 130, 10,
-				new TranslatableText(supremeDebugButtonStartingName),
-				(buttonWidget) -> {
-					if (CurseBox.debug) {
-						CurseBox.LOGGER.info(
-								"Config menu supreme debug button is pressed");
-					}
-
-					if (CurseBox.supremeDebug) {
-						CurseBox.supremeDebug = false;
-						buttonWidget.setMessage(new TranslatableText(
-								"cursebox.config.menu.supreme.debug.off"));
-					} else {
-						CurseBox.supremeDebug = true;
-						buttonWidget.setMessage(new TranslatableText(
-								"cursebox.config.menu.supreme.debug.on"));
-					}
-
-					CurseBox.LOGGER
-							.info("Changed value to: " + CurseBox.supremeDebug);
-				}));
 		String accerlerateTorchDeathButtonStartingName;
 		if (CurseBox.accelerateTorchDeath) {
 			accerlerateTorchDeathButtonStartingName = "cursebox.config.menu.fast.torches.on";

@@ -32,6 +32,7 @@
 		"java": ">=16"
 	},
 	"suggests": {
-		"modmenu": "*"
+		"modmenu": "*",
+		"lambdynlights":">=2.1.0"
 	}
 }

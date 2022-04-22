@@ -3,11 +3,10 @@
 	"minVersion": "0.8",
 	"package": "pkg.deepCurse.curseBox.mixin",
 	"compatibilityLevel": "JAVA_16",
-	"mixins": [
-		
-	],
+	"mixins": [],
 	"client": [
-		"client.TitleScreenMixin"
+		"client.TitleScreenMixin",
+		"integrations.LambDynLightsIntegration"
 	],
 	"injectors": {
 		"defaultRequire": 1
