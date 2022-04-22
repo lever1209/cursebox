@@ -33,10 +33,5 @@
 	},
 	"suggests": {
 		"modmenu": "*"
-	},
-	"jars": [
-		{
-			"file": "META-INF/jars/darkness-fabric-modified.jar"
-		}
-	]
+	}
 }
