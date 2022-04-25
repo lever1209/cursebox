@@ -1,5 +1,8 @@
 package pkg.deepCurse.curseBox.core.integrations;
 
+import java.io.IOException;
+import java.nio.file.Files;
+
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.gui.screen.Screen;
@@ -173,6 +176,32 @@ public class ModMenuIntegrationScreen extends Screen {
 
 					CurseBox.LOGGER.info("Changed value to: "
 							+ CurseBox.accelerateTorchDeath);
+				}));
+		
+
+
+		this.addDrawableChild(new ButtonWidget(14, 94, 165, 10,
+				new TranslatableText("cursebox.config.menu.reload.config"),
+				(buttonWidget) -> {
+					if (CurseBox.debug) {
+						CurseBox.LOGGER.info(
+								"[cursebox] Reloading Configs");
+					}
+					CurseBox.loadConfig();
+				}));
+		
+		this.addDrawableChild(new ButtonWidget(14, 104, 165, 10,
+				new TranslatableText("cursebox.config.menu.delete.config"),
+				(buttonWidget) -> {
+					if (CurseBox.debug) {
+						CurseBox.LOGGER.info(
+								"[cursebox] Deleting Configs");
+					}
+					try {
+						Files.delete(CurseBox.configFile.toPath());
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}));
 	}
 

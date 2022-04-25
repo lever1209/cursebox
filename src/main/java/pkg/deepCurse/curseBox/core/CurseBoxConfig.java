@@ -1,11 +1,12 @@
 package pkg.deepCurse.curseBox.core;
 
+import java.io.File;
 import java.util.HashMap;
 
 public class CurseBoxConfig {
 
 	private static HashMap<String, Object> configMap = new HashMap<>();
-	
+
 	/**
 	 * valid keys are:
 	 * 
@@ -19,6 +20,19 @@ public class CurseBoxConfig {
 					+ " is final, and may not be changed after it is set. . .");
 		}
 		configMap.put(key, b);
+	}
+
+	public static Object getConfig(String key) {
+		if (!configMap.containsKey(key)) {
+			return null;
+		}
+		return configMap.get(key);
+	}
+
+	public static void loadDefaultValues() {
+	}
+
+	public static void loadValuesFromFile(File configFile) {
 	}
 
 }
