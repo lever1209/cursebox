@@ -10,8 +10,8 @@
 		# Enables all custom fog used by Darkness (default: true)
 		enableCustomFog = true
 		
-		# Enables custom fog in the End (default: false)
-		enableEndFog = false
+		# Enables custom fog in the End (default: true)
+		enableEndFog = true
 		
 		# Enables custom fog in the Nether (default: true)
 		enableNetherFog = true

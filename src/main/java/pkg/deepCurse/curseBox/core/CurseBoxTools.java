@@ -6,7 +6,7 @@ import net.minecraft.world.World;
 
 public class CurseBoxTools {
 	public static boolean isNearLight(World world, BlockPos pos) {
-		return isNearLight(world, pos, CurseBox.grueAttackLightLevelMaximum);
+		return isNearLight(world, pos, CurseBoxConfig.grueAttackLightLevelMaximum);
 	}
 
 	public static boolean isNearLight(World world, BlockPos pos, int grueAttackLightLevelMaximum) {

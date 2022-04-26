@@ -14,7 +14,7 @@ public class LambDynLightsIntegration {
 
 	@Inject(at = @At("INVOKE"), method = "onInitializeClient()V")
 	public void init(CallbackInfo info) {
-		CurseBoxConfig.setConfig("lambDynLightsIsPresent", true);
+		CurseBoxConfig.lambDynLightsIsPresent = true;
 	}
 
 }

@@ -16,6 +16,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import pkg.deepCurse.curseBox.core.CurseBox;
+import pkg.deepCurse.curseBox.core.CurseBoxConfig;
 
 public class ModMenuIntegrationScreen extends Screen {
 	Screen parent;
@@ -33,13 +34,11 @@ public class ModMenuIntegrationScreen extends Screen {
 						CurseBox.LOGGER
 								.info("Config menu return button is pressed");
 					}
-					
-					
 
 					this.client.setScreen(this.parent);
 				}));
 		String fogButtonStartingName;
-		if (CurseBox.enableCustomFog) {
+		if (CurseBoxConfig.enableCustomFog) {
 			fogButtonStartingName = "cursebox.config.menu.fog.on";
 		} else {
 			fogButtonStartingName = "cursebox.config.menu.fog.off";
@@ -52,18 +51,18 @@ public class ModMenuIntegrationScreen extends Screen {
 								.info("Config menu fog button is pressed");
 					}
 
-					if (CurseBox.enableCustomFog) {
-						CurseBox.enableCustomFog = false;
+					if (CurseBoxConfig.enableCustomFog) {
+						CurseBoxConfig.enableCustomFog = false;
 						buttonWidget.setMessage(new TranslatableText(
 								"cursebox.config.menu.fog.off"));
 					} else {
-						CurseBox.enableCustomFog = true;
+						CurseBoxConfig.enableCustomFog = true;
 						buttonWidget.setMessage(new TranslatableText(
 								"cursebox.config.menu.fog.on"));
 					}
 
-					CurseBox.LOGGER.info(
-							"Changed value to: " + CurseBox.enableCustomFog);
+					CurseBox.LOGGER.info("Changed value to: "
+							+ CurseBoxConfig.enableCustomFog);
 				}));
 		String debugButtonStartingName;
 		if (CurseBox.debug) {
@@ -93,7 +92,7 @@ public class ModMenuIntegrationScreen extends Screen {
 					CurseBox.LOGGER.info("Changed value to: " + CurseBox.debug);
 				}));
 		String attackOnlyPlayersButtonStartingName;
-		if (CurseBox.gruesOnlyAttackPlayers) {
+		if (CurseBoxConfig.gruesOnlyAttackPlayers) {
 			attackOnlyPlayersButtonStartingName = "cursebox.config.menu.attack.only.players.on";
 		} else {
 			attackOnlyPlayersButtonStartingName = "cursebox.config.menu.attack.only.players.off";
@@ -107,21 +106,21 @@ public class ModMenuIntegrationScreen extends Screen {
 								"Config menu attack only players button is pressed");
 					}
 
-					if (CurseBox.gruesOnlyAttackPlayers) {
-						CurseBox.gruesOnlyAttackPlayers = false;
+					if (CurseBoxConfig.gruesOnlyAttackPlayers) {
+						CurseBoxConfig.gruesOnlyAttackPlayers = false;
 						buttonWidget.setMessage(new TranslatableText(
 								"cursebox.config.menu.attack.only.players.off"));
 					} else {
-						CurseBox.gruesOnlyAttackPlayers = true;
+						CurseBoxConfig.gruesOnlyAttackPlayers = true;
 						buttonWidget.setMessage(new TranslatableText(
 								"cursebox.config.menu.attack.only.players.on"));
 					}
 
-					CurseBox.LOGGER.info(
-							"Changed value to: " + CurseBox.gruesOnlyAttackPlayers);
+					CurseBox.LOGGER.info("Changed value to: "
+							+ CurseBoxConfig.gruesOnlyAttackPlayers);
 				}));
 		String resetChanceButtonStartingName;
-		if (CurseBox.resetGrueAttackChance) {
+		if (CurseBoxConfig.resetGrueAttackChance) {
 			resetChanceButtonStartingName = "cursebox.config.menu.reset.chance.on";
 		} else {
 			resetChanceButtonStartingName = "cursebox.config.menu.reset.chance.off";
@@ -130,27 +129,23 @@ public class ModMenuIntegrationScreen extends Screen {
 		this.addDrawableChild(new ButtonWidget(14, 54, 200, 10,
 				new TranslatableText(resetChanceButtonStartingName),
 				(buttonWidget) -> {
-					if (CurseBox.debug) {
-						CurseBox.LOGGER.info(
-								"Config menu reset chance button is pressed");
-					}
 
-					if (CurseBox.resetGrueAttackChance) {
-						CurseBox.resetGrueAttackChance = false;
+					if (CurseBoxConfig.resetGrueAttackChance) {
+						CurseBoxConfig.resetGrueAttackChance = false;
 						buttonWidget.setMessage(new TranslatableText(
 								"cursebox.config.menu.reset.chance.off"));
 					} else {
-						CurseBox.resetGrueAttackChance = true;
+						CurseBoxConfig.resetGrueAttackChance = true;
 						buttonWidget.setMessage(new TranslatableText(
 								"cursebox.config.menu.reset.chance.on"));
 					}
 
-					CurseBox.LOGGER
-							.info("Changed value to: " + CurseBox.resetGrueAttackChance);
+					CurseBox.LOGGER.info("Changed value to: "
+							+ CurseBoxConfig.resetGrueAttackChance);
 				}));
 
 		String accerlerateTorchDeathButtonStartingName;
-		if (CurseBox.accelerateTorchDeath) {
+		if (CurseBoxConfig.accelerateTorchDeath) {
 			accerlerateTorchDeathButtonStartingName = "cursebox.config.menu.fast.torches.on";
 		} else {
 			accerlerateTorchDeathButtonStartingName = "cursebox.config.menu.fast.torches.off";
@@ -159,46 +154,38 @@ public class ModMenuIntegrationScreen extends Screen {
 		this.addDrawableChild(new ButtonWidget(14, 74, 135, 10,
 				new TranslatableText(accerlerateTorchDeathButtonStartingName),
 				(buttonWidget) -> {
-					if (CurseBox.debug) {
-						CurseBox.LOGGER.info(
-								"Config menu supreme debug button is pressed");
-					}
 
-					if (CurseBox.accelerateTorchDeath) {
-						CurseBox.accelerateTorchDeath = false;
+					if (CurseBoxConfig.accelerateTorchDeath) {
+						CurseBoxConfig.accelerateTorchDeath = false;
 						buttonWidget.setMessage(new TranslatableText(
 								"cursebox.config.menu.fast.torches.off"));
 					} else {
-						CurseBox.accelerateTorchDeath = true;
+						CurseBoxConfig.accelerateTorchDeath = true;
 						buttonWidget.setMessage(new TranslatableText(
 								"cursebox.config.menu.fast.torches.on"));
 					}
 
 					CurseBox.LOGGER.info("Changed value to: "
-							+ CurseBox.accelerateTorchDeath);
+							+ CurseBoxConfig.accelerateTorchDeath);
 				}));
-		
-
 
 		this.addDrawableChild(new ButtonWidget(14, 94, 165, 10,
 				new TranslatableText("cursebox.config.menu.reload.config"),
 				(buttonWidget) -> {
 					if (CurseBox.debug) {
-						CurseBox.LOGGER.info(
-								"[cursebox] Reloading Configs");
+						CurseBox.LOGGER.info("[cursebox] Reloading Configs");
 					}
-					CurseBox.loadConfig();
+					CurseBoxConfig.loadConfig();
 				}));
-		
+
 		this.addDrawableChild(new ButtonWidget(14, 104, 165, 10,
 				new TranslatableText("cursebox.config.menu.delete.config"),
 				(buttonWidget) -> {
 					if (CurseBox.debug) {
-						CurseBox.LOGGER.info(
-								"[cursebox] Deleting Configs");
+						CurseBox.LOGGER.info("[cursebox] Deleting Configs");
 					}
 					try {
-						Files.delete(CurseBox.configFile.toPath());
+						Files.delete(CurseBoxConfig.getConfigFile().toPath());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
@@ -215,7 +202,8 @@ public class ModMenuIntegrationScreen extends Screen {
 		// this.client.getTextureManager().bindTexture(
 		// new Identifier("minecraft", "textures/block/cobbled_deepslate.png"));
 		RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
-		RenderSystem.setShaderTexture(0, new Identifier("minecraft", "textures/block/cobbled_deepslate.png"));
+		RenderSystem.setShaderTexture(0, new Identifier("minecraft",
+				"textures/block/cobbled_deepslate.png"));
 		RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 		bufferBuilder.begin(DrawMode.QUADS,
 				VertexFormats.POSITION_TEXTURE_COLOR);
