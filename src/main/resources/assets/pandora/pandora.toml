@@ -4,8 +4,8 @@
 # The version bundled with Curse Box is modified, and can be obtained from (https://github.com/lever1209/darkness)
 [grondag]
 	
-	# fog options
-	[fog]
+	# Fog options
+	[grondag.fog]
 		
 		# Enables all custom fog used by Darkness (default: true)
 		enableCustomFog = true
@@ -54,6 +54,8 @@
 	# this number is tuned for max gamma, darkness/custom fog enabled
 	grueAttackLightLevelMaximum = 2
 	
+	grueWards= []
+	
 # Settings that change the behavior of the darkness, and whatevers in it
 [darkness]
 	
@@ -68,7 +70,7 @@
 	
 [gamma]
 	
-	# Should cursebox lock your gamma to the next value (default: true)
+	# Should Pandora lock your gamma to the next value (default: true)
 	# This is recommended to be left at default
 	resetGamma = true
 	

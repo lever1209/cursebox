@@ -25,28 +25,22 @@ repositories {
 }
 
 dependencies {
-	minecraft "com.mojang:minecraft:1.18.2"
-	mappings "net.fabricmc:yarn:1.18.2+build.3"
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "net.fabricmc:yarn:${project.yarn_mappings}"
 	
-	modImplementation "net.fabricmc:fabric-loader:0.13.3"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:0.51.1+1.18.2"
-	modImplementation 'com.terraformersmc:modmenu:3.1.1'
-	// modImplementation 'me.shedaniel.cloth:cloth-config-fabric:6.2.57'
-	// modImplementation name: 'lambdynamiclights-2.1.0+1.17'
+	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
+	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+	// modImplementation name: "lambdynamiclights-2.1.0+1.17"
 	modImplementation name: "darkness-fabric-modified"
 	
-	implementation 'org.slf4j:slf4j-simple:1.7.9'
-	implementation 'com.electronwill.night-config:core:3.6.5'
-	implementation 'com.electronwill.night-config:toml:3.6.5'
+	implementation "org.slf4j:slf4j-simple:${project.slf4j_simple_version}"
+	implementation "com.electronwill.night-config:core:${project.night_core}"
+	implementation "com.electronwill.night-config:toml:${project.night_toml}"
 	
 	include name: "darkness-fabric-modified"
-	include "net.fabricmc.fabric-api:fabric-api:0.51.1+1.18.2"
-	include 'com.terraformersmc:modmenu:3.1.1'
-	// include name: "cursebox.toml"
-	include 'com.electronwill.night-config:core:3.6.5'
-	include 'com.electronwill.night-config:toml:3.6.5'
-
-	
+	include "com.electronwill.night-config:core:${project.night_core}"
+	include "com.electronwill.night-config:toml:${project.night_toml}"
 }
 
 processResources {
@@ -62,7 +56,7 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 task copyToMultiMC (type: Copy, dependsOn: remapJar) {
-	from "build/libs/curse-box-0.0.0.jar"
+	from "build/libs/pandora-0.1.0.jar"
 	into "@testingEnvironmentShortcut"
 	println "Copied jar into Multimc testing directory"
 }

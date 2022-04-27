@@ -11,8 +11,7 @@ public class Pandora implements ModInitializer {
 
 	public static boolean debug = true;
 
-	public static final Logger LOGGER = LogManager
-			.getLogger(Pandora.class.getSimpleName());
+	public static final Logger LOGGER = LogManager.getLogger(Pandora.class);
 
 	static {
 		PandoraConfig.loadConfig();
@@ -23,14 +22,14 @@ public class Pandora implements ModInitializer {
 
 		if (debug) {
 			LOGGER.info(
-					"[cursebox] HEY DUMBASS, MAKE SURE YOUR MIXINS ARE LISTED IN THE MIXIN FILE (i have wasted <15.4> hour(s) because i forgot to add it to mixins)");
+					"[pandora] HEY DUMBASS, MAKE SURE YOUR MIXINS ARE LISTED IN THE MIXIN FILE (i have wasted <15.4> hour(s) because i forgot to add it to mixins)");
 		}
 
-		LOGGER.info("[cursebox] Initializing. . .");
+		LOGGER.info("[pandora] Initializing. . .");
 		ServerTickEvents.END_SERVER_TICK.register((MinecraftServer) -> {
 			EndServerTickCallback.onEndTick(MinecraftServer);
 		});
-		LOGGER.info("[cursebox] Loaded and ready. . .");
+		LOGGER.info("[pandora] Loaded and ready. . .");
 
 	}
 }

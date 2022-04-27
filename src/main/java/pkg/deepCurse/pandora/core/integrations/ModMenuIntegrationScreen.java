@@ -190,6 +190,14 @@ public class ModMenuIntegrationScreen extends Screen {
 						e.printStackTrace();
 					}
 				}));
+		this.addDrawableChild(new ButtonWidget(14, 114, 165, 10,
+				new TranslatableText("pandora.config.menu.save.config"),
+				(buttonWidget) -> {
+					if (Pandora.debug) {
+						Pandora.LOGGER.info("[pandora] Saving Configs");
+					}
+					PandoraConfig.saveConfigs();
+				}));
 	}
 
 	@Override
