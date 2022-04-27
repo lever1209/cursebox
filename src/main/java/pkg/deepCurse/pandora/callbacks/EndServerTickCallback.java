@@ -1,6 +1,5 @@
 package pkg.deepCurse.pandora.callbacks;
 
-import java.util.Arrays;
 import java.util.Iterator;
 
 import net.minecraft.entity.Entity;
@@ -15,9 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.registry.Registry;
+import pkg.deepCurse.pandora.core.CustomDamageSource;
 import pkg.deepCurse.pandora.core.PandoraConfig;
 import pkg.deepCurse.pandora.core.PandoraTools;
-import pkg.deepCurse.pandora.core.CustomDamageSource;
 import pkg.deepCurse.pandora.core.objects.EntityCooldownManager;
 
 public class EndServerTickCallback {
@@ -55,8 +55,9 @@ public class EndServerTickCallback {
 					Iterator<ItemStack> itemStack = entity.getItemsHand()
 							.iterator();
 					while (itemStack.hasNext()) {
-						if (Arrays.asList(PandoraConfig.grueWards)
-								.contains(itemStack.next().getItem())) {
+						if (PandoraConfig.grueWards.contains(
+								Registry.ITEM.getId(itemStack.next().getItem())
+										.toString())) {
 							return;
 						}
 					}
@@ -160,9 +161,9 @@ public class EndServerTickCallback {
 																				// entities
 						if (!entity.isSubmergedInWater()
 								|| PandoraConfig.gruesCanAttackInWater) {
-							if (!Arrays.asList(
-									PandoraConfig.blacklistedEntityType)
-									.contains(entity.getType())) {
+							if (!PandoraConfig.blacklistedEntityType.contains(
+									Registry.ENTITY_TYPE.getId(entity.getType())
+											.toString())) {
 								if (mcSv.isHardcore()
 										&& (PandoraConfig.hardcoreAffectsOtherMobs
 												|| entity instanceof PlayerEntity)) {
