@@ -1,24 +1,28 @@
-package pkg.deepCurse.curseBox.core;
+package pkg.deepCurse.pandora.core;
 
 import java.io.File;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.entity.EntityType;
+import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 
-public class CurseBoxConfig {
+public class PandoraConfig {
 
 	public static File getConfigFile() {
 		return new File(FabricLoader.getInstance().getConfigDir().toFile(),
-				"cursebox.toml");
+				"pandora.toml");
 	}
-	
+
 	public static CommentedFileConfig config = CommentedFileConfig
 			.builder(getConfigFile()).autosave()
-			.defaultResource("/assets/cursebox/cursebox.toml").build();
-	
+			.defaultResource("/assets/pandora/pandora.toml").build();
+
 	// integration
-	public static boolean lambDynLightsIsPresent = FabricLoader.getInstance().isModLoaded("lambdynlights");
+	public static boolean lambDynLightsIsPresent = FabricLoader.getInstance()
+			.isModLoaded("lambdynlights");
 	// grondags darkness
 	public static boolean enableCustomFog;
 	public static boolean enableEndFog;
@@ -45,10 +49,13 @@ public class CurseBoxConfig {
 	public static boolean accelerateTorchDeath;
 	public static boolean resetGrueAttackChance;
 
+	public static Item[] grueWards;
+	public static EntityType<?>[] blacklistedEntityType;
+
 	public static void loadConfig() {
 
 		config.load();
-		
+
 		// grondag.fog
 		enableCustomFog = config.getOrElse("grondag.fog.enableCustomFog", true);
 		enableEndFog = config.getOrElse("grondag.fog.enableEndFog", false);
@@ -73,6 +80,11 @@ public class CurseBoxConfig {
 				.getOrElse("grues.hardcoreAffectsOtherMobs", false);
 		grueAttackLightLevelMaximum = config
 				.getOrElse("grues.grueAttackLightLevelMaximum", 2);
+		grueWards = config.getOrElse("grues.grueWards",
+				new Item[]{Items.TORCH, Items.SOUL_TORCH});
+		blacklistedEntityType = config.getOrElse("grues.blacklistedEntityType",
+				new EntityType[]{EntityType.ENDER_DRAGON, EntityType.WITHER,
+						EntityType.IRON_GOLEM});
 		// darkness
 		villagersFearDarkness = config
 				.getOrElse("darkness.villagersFearDarkness", true);
@@ -87,8 +99,7 @@ public class CurseBoxConfig {
 
 	public static boolean isDynamicLightingEnabled() {
 		return lambDynLightsIsPresent;
+		
 	}
-	
-	
-	
+
 }

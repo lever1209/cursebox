@@ -1,8 +1,8 @@
 {
 	"schemaVersion": 1,
-	"id": "cursebox",
+	"id": "pandora",
 	"version": "${version}",
-	"name": "Curse Box",
+	"name": "Pandora",
 	"description": "",
 	"authors": [
 		"deepCurse"
@@ -12,18 +12,18 @@
 		"sources": "https://github.com/lever1209/cursebox"
 	},
 	"license": "BSD-3",
-	"icon": "assets/cursebox/icon.png",
+	"icon": "assets/pandora/icon.png",
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"pkg.deepCurse.curseBox.core.CurseBox"
+			"pkg.deepCurse.pandora.core.Pandora"
 		],
 		"modmenu": [
-			"pkg.deepCurse.curseBox.core.integrations.ModMenuIntegration"
+			"pkg.deepCurse.pandora.core.integrations.ModMenuIntegration"
 		]
 	},
 	"mixins": [
-		"cursebox.mixins.json"
+		"pandora.mixins.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.13.3",

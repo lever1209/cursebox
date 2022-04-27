@@ -1,4 +1,4 @@
-package pkg.deepCurse.curseBox.core.integrations;
+package pkg.deepCurse.pandora.core.integrations;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -15,177 +15,177 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import pkg.deepCurse.curseBox.core.CurseBox;
-import pkg.deepCurse.curseBox.core.CurseBoxConfig;
+import pkg.deepCurse.pandora.core.Pandora;
+import pkg.deepCurse.pandora.core.PandoraConfig;
 
 public class ModMenuIntegrationScreen extends Screen {
 	Screen parent;
 
 	public ModMenuIntegrationScreen(Screen parent) {
-		super(new TranslatableText("cursebox.config.menu.title"));
+		super(new TranslatableText("pandora.config.menu.title"));
 		this.parent = parent;
 	}
 	@Override
 	protected void init() {
 		this.addDrawableChild(new ButtonWidget(14, 14, 49, 10,
-				new TranslatableText("cursebox.menu.return"),
+				new TranslatableText("pandora.menu.return"),
 				(buttonWidget) -> {
-					if (CurseBox.debug) {
-						CurseBox.LOGGER
+					if (Pandora.debug) {
+						Pandora.LOGGER
 								.info("Config menu return button is pressed");
 					}
 
 					this.client.setScreen(this.parent);
 				}));
 		String fogButtonStartingName;
-		if (CurseBoxConfig.enableCustomFog) {
-			fogButtonStartingName = "cursebox.config.menu.fog.on";
+		if (PandoraConfig.enableCustomFog) {
+			fogButtonStartingName = "pandora.config.menu.fog.on";
 		} else {
-			fogButtonStartingName = "cursebox.config.menu.fog.off";
+			fogButtonStartingName = "pandora.config.menu.fog.off";
 		}
 
 		this.addDrawableChild(new ButtonWidget(14, 24, 49, 10,
 				new TranslatableText(fogButtonStartingName), (buttonWidget) -> {
-					if (CurseBox.debug) {
-						CurseBox.LOGGER
+					if (Pandora.debug) {
+						Pandora.LOGGER
 								.info("Config menu fog button is pressed");
 					}
 
-					if (CurseBoxConfig.enableCustomFog) {
-						CurseBoxConfig.enableCustomFog = false;
+					if (PandoraConfig.enableCustomFog) {
+						PandoraConfig.enableCustomFog = false;
 						buttonWidget.setMessage(new TranslatableText(
-								"cursebox.config.menu.fog.off"));
+								"pandora.config.menu.fog.off"));
 					} else {
-						CurseBoxConfig.enableCustomFog = true;
+						PandoraConfig.enableCustomFog = true;
 						buttonWidget.setMessage(new TranslatableText(
-								"cursebox.config.menu.fog.on"));
+								"pandora.config.menu.fog.on"));
 					}
 
-					CurseBox.LOGGER.info("Changed value to: "
-							+ CurseBoxConfig.enableCustomFog);
+					Pandora.LOGGER.info("Changed value to: "
+							+ PandoraConfig.enableCustomFog);
 				}));
 		String debugButtonStartingName;
-		if (CurseBox.debug) {
-			debugButtonStartingName = "cursebox.config.menu.debug.on";
+		if (Pandora.debug) {
+			debugButtonStartingName = "pandora.config.menu.debug.on";
 		} else {
-			debugButtonStartingName = "cursebox.config.menu.debug.off";
+			debugButtonStartingName = "pandora.config.menu.debug.off";
 		}
 
 		this.addDrawableChild(new ButtonWidget(14, 34, 90, 10,
 				new TranslatableText(debugButtonStartingName),
 				(buttonWidget) -> {
-					if (CurseBox.debug) {
-						CurseBox.LOGGER
+					if (Pandora.debug) {
+						Pandora.LOGGER
 								.info("Config menu debug button is pressed");
 					}
 
-					if (CurseBox.debug) {
-						CurseBox.debug = false;
+					if (Pandora.debug) {
+						Pandora.debug = false;
 						buttonWidget.setMessage(new TranslatableText(
-								"cursebox.config.menu.debug.off"));
+								"pandora.config.menu.debug.off"));
 					} else {
-						CurseBox.debug = true;
+						Pandora.debug = true;
 						buttonWidget.setMessage(new TranslatableText(
-								"cursebox.config.menu.debug.on"));
+								"pandora.config.menu.debug.on"));
 					}
 
-					CurseBox.LOGGER.info("Changed value to: " + CurseBox.debug);
+					Pandora.LOGGER.info("Changed value to: " + Pandora.debug);
 				}));
 		String attackOnlyPlayersButtonStartingName;
-		if (CurseBoxConfig.gruesOnlyAttackPlayers) {
-			attackOnlyPlayersButtonStartingName = "cursebox.config.menu.attack.only.players.on";
+		if (PandoraConfig.gruesOnlyAttackPlayers) {
+			attackOnlyPlayersButtonStartingName = "pandora.config.menu.attack.only.players.on";
 		} else {
-			attackOnlyPlayersButtonStartingName = "cursebox.config.menu.attack.only.players.off";
+			attackOnlyPlayersButtonStartingName = "pandora.config.menu.attack.only.players.off";
 		}
 
 		this.addDrawableChild(new ButtonWidget(14, 44, 165, 10,
 				new TranslatableText(attackOnlyPlayersButtonStartingName),
 				(buttonWidget) -> {
-					if (CurseBox.debug) {
-						CurseBox.LOGGER.info(
+					if (Pandora.debug) {
+						Pandora.LOGGER.info(
 								"Config menu attack only players button is pressed");
 					}
 
-					if (CurseBoxConfig.gruesOnlyAttackPlayers) {
-						CurseBoxConfig.gruesOnlyAttackPlayers = false;
+					if (PandoraConfig.gruesOnlyAttackPlayers) {
+						PandoraConfig.gruesOnlyAttackPlayers = false;
 						buttonWidget.setMessage(new TranslatableText(
-								"cursebox.config.menu.attack.only.players.off"));
+								"pandora.config.menu.attack.only.players.off"));
 					} else {
-						CurseBoxConfig.gruesOnlyAttackPlayers = true;
+						PandoraConfig.gruesOnlyAttackPlayers = true;
 						buttonWidget.setMessage(new TranslatableText(
-								"cursebox.config.menu.attack.only.players.on"));
+								"pandora.config.menu.attack.only.players.on"));
 					}
 
-					CurseBox.LOGGER.info("Changed value to: "
-							+ CurseBoxConfig.gruesOnlyAttackPlayers);
+					Pandora.LOGGER.info("Changed value to: "
+							+ PandoraConfig.gruesOnlyAttackPlayers);
 				}));
 		String resetChanceButtonStartingName;
-		if (CurseBoxConfig.resetGrueAttackChance) {
-			resetChanceButtonStartingName = "cursebox.config.menu.reset.chance.on";
+		if (PandoraConfig.resetGrueAttackChance) {
+			resetChanceButtonStartingName = "pandora.config.menu.reset.chance.on";
 		} else {
-			resetChanceButtonStartingName = "cursebox.config.menu.reset.chance.off";
+			resetChanceButtonStartingName = "pandora.config.menu.reset.chance.off";
 		}
 
 		this.addDrawableChild(new ButtonWidget(14, 54, 200, 10,
 				new TranslatableText(resetChanceButtonStartingName),
 				(buttonWidget) -> {
 
-					if (CurseBoxConfig.resetGrueAttackChance) {
-						CurseBoxConfig.resetGrueAttackChance = false;
+					if (PandoraConfig.resetGrueAttackChance) {
+						PandoraConfig.resetGrueAttackChance = false;
 						buttonWidget.setMessage(new TranslatableText(
-								"cursebox.config.menu.reset.chance.off"));
+								"pandora.config.menu.reset.chance.off"));
 					} else {
-						CurseBoxConfig.resetGrueAttackChance = true;
+						PandoraConfig.resetGrueAttackChance = true;
 						buttonWidget.setMessage(new TranslatableText(
-								"cursebox.config.menu.reset.chance.on"));
+								"pandora.config.menu.reset.chance.on"));
 					}
 
-					CurseBox.LOGGER.info("Changed value to: "
-							+ CurseBoxConfig.resetGrueAttackChance);
+					Pandora.LOGGER.info("Changed value to: "
+							+ PandoraConfig.resetGrueAttackChance);
 				}));
 
 		String accerlerateTorchDeathButtonStartingName;
-		if (CurseBoxConfig.accelerateTorchDeath) {
-			accerlerateTorchDeathButtonStartingName = "cursebox.config.menu.fast.torches.on";
+		if (PandoraConfig.accelerateTorchDeath) {
+			accerlerateTorchDeathButtonStartingName = "pandora.config.menu.fast.torches.on";
 		} else {
-			accerlerateTorchDeathButtonStartingName = "cursebox.config.menu.fast.torches.off";
+			accerlerateTorchDeathButtonStartingName = "pandora.config.menu.fast.torches.off";
 		}
 
 		this.addDrawableChild(new ButtonWidget(14, 74, 135, 10,
 				new TranslatableText(accerlerateTorchDeathButtonStartingName),
 				(buttonWidget) -> {
 
-					if (CurseBoxConfig.accelerateTorchDeath) {
-						CurseBoxConfig.accelerateTorchDeath = false;
+					if (PandoraConfig.accelerateTorchDeath) {
+						PandoraConfig.accelerateTorchDeath = false;
 						buttonWidget.setMessage(new TranslatableText(
-								"cursebox.config.menu.fast.torches.off"));
+								"pandora.config.menu.fast.torches.off"));
 					} else {
-						CurseBoxConfig.accelerateTorchDeath = true;
+						PandoraConfig.accelerateTorchDeath = true;
 						buttonWidget.setMessage(new TranslatableText(
-								"cursebox.config.menu.fast.torches.on"));
+								"pandora.config.menu.fast.torches.on"));
 					}
 
-					CurseBox.LOGGER.info("Changed value to: "
-							+ CurseBoxConfig.accelerateTorchDeath);
+					Pandora.LOGGER.info("Changed value to: "
+							+ PandoraConfig.accelerateTorchDeath);
 				}));
 
 		this.addDrawableChild(new ButtonWidget(14, 94, 165, 10,
-				new TranslatableText("cursebox.config.menu.reload.config"),
+				new TranslatableText("pandora.config.menu.reload.config"),
 				(buttonWidget) -> {
-					if (CurseBox.debug) {
-						CurseBox.LOGGER.info("[cursebox] Reloading Configs");
+					if (Pandora.debug) {
+						Pandora.LOGGER.info("[pandora] Reloading Configs");
 					}
-					CurseBoxConfig.loadConfig();
+					PandoraConfig.loadConfig();
 				}));
 
 		this.addDrawableChild(new ButtonWidget(14, 104, 165, 10,
-				new TranslatableText("cursebox.config.menu.delete.config"),
+				new TranslatableText("pandora.config.menu.delete.config"),
 				(buttonWidget) -> {
-					if (CurseBox.debug) {
-						CurseBox.LOGGER.info("[cursebox] Deleting Configs");
+					if (Pandora.debug) {
+						Pandora.LOGGER.info("[pandora] Deleting Configs");
 					}
 					try {
-						Files.delete(CurseBoxConfig.getConfigFile().toPath());
+						Files.delete(PandoraConfig.getConfigFile().toPath());
 					} catch (IOException e) {
 						e.printStackTrace();
 					}

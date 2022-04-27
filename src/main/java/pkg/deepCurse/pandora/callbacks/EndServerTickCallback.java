@@ -1,0 +1,182 @@
+package pkg.deepCurse.pandora.callbacks;
+
+import java.util.Arrays;
+import java.util.Iterator;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.passive.AnimalEntity;
+import net.minecraft.entity.passive.VillagerEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.math.BlockPos;
+import pkg.deepCurse.pandora.core.PandoraConfig;
+import pkg.deepCurse.pandora.core.PandoraTools;
+import pkg.deepCurse.pandora.core.CustomDamageSource;
+import pkg.deepCurse.pandora.core.objects.EntityCooldownManager;
+
+public class EndServerTickCallback {
+
+	private static EntityCooldownManager cooldownManager = new EntityCooldownManager();
+
+	public static void onEndTick(MinecraftServer mcSv) {
+
+		cooldownManager.update();
+		Iterator<ServerWorld> worlds = mcSv.getWorlds().iterator();
+		while (worlds.hasNext()) {
+			ServerWorld world = (ServerWorld) worlds.next();
+			Iterator<Entity> entities = world.iterateEntities().iterator();
+			while (entities.hasNext()) {
+				Entity entity = (Entity) entities.next();
+
+				if (!cooldownManager.isCoolingDown(entity)) {
+					doDarknessDamage(entity, 0.0F, world, mcSv);
+					cooldownManager.set(entity,
+							world.getRandom().nextInt(60) + 30);
+				}
+				entity = null;
+			}
+			entities = null;
+			world = null;
+		}
+	}
+
+	private static void doDarknessDamage(Entity entity, float damageAmount,
+			ServerWorld world, MinecraftServer mcSv) { // FATAL OPTOMIZE ME ASAP
+		if (entity != null) {
+			if (entity instanceof PlayerEntity
+					|| !PandoraConfig.gruesOnlyAttackPlayers) {
+				if (PandoraConfig.isDynamicLightingEnabled()) {
+					Iterator<ItemStack> itemStack = entity.getItemsHand()
+							.iterator();
+					while (itemStack.hasNext()) {
+						if (Arrays.asList(PandoraConfig.grueWards)
+								.contains(itemStack.next().getItem())) {
+							return;
+						}
+					}
+				}
+
+				float trueDamageAmount = damageAmount;
+				if (damageAmount <= 0.0F) {
+					switch (world.getDifficulty()) {
+						case HARD :
+							trueDamageAmount = 8.0F;
+							break;
+						case NORMAL :
+							trueDamageAmount = 4.0F;
+							break;
+						case EASY :
+							trueDamageAmount = 2.0F;
+							break;
+						case PEACEFUL :
+							trueDamageAmount = 1.0F;
+					}
+				}
+
+				float resetGrueAttackChance = world.getRandom().nextFloat();
+				if (PandoraConfig.resetGrueAttackChance) {
+					resetGrueAttackChance = 0.0F;
+				}
+
+				BlockPos entityLocation = entity.getBlockPos();
+				if (!world.getBlockState(entityLocation).isAir()) {
+					entityLocation = entityLocation.up();
+				}
+
+				if (!PandoraTools.isNearLight(world, entityLocation)) {
+					boolean isItem = false;
+					if (!(entity instanceof PlayerEntity)) {
+						boolean skipRaceDiscovery = false;
+						if (!skipRaceDiscovery
+								&& entity instanceof HostileEntity) {
+							if (!PandoraConfig.gruesCanAttackHostileMobs) {
+								return;
+							}
+
+							skipRaceDiscovery = true;
+							trueDamageAmount /= 2.0F;
+						}
+
+						if (!skipRaceDiscovery
+								&& entity instanceof VillagerEntity) {
+							if (!PandoraConfig.gruesCanAttackVillagers) {
+								return;
+							}
+
+							skipRaceDiscovery = true;
+						}
+
+						if (!skipRaceDiscovery
+								&& entity instanceof AnimalEntity) {
+							if (!PandoraConfig.gruesCanAttackAnimals) {
+								return;
+							}
+
+							skipRaceDiscovery = true;
+						}
+
+						if (entity.getType() == EntityType.ITEM) {
+							isItem = true;
+						}
+
+						if (!(entity instanceof LivingEntity) && !isItem) {
+							return;
+						}
+
+						if (isItem) {
+							if ((double) resetGrueAttackChance <= 0.00015D
+									&& PandoraConfig.gruesCanEatItems) {
+								entity.kill();
+								return;
+							}
+
+							return;
+						}
+
+						if ((double) resetGrueAttackChance > 0.045D) {
+							return;
+						}
+					} else if (entity instanceof PlayerEntity) {
+						if (((PlayerEntity) entity).isCreative()) {
+							return;
+						}
+					}
+
+					if (!(entity instanceof LivingEntity)
+							|| !((LivingEntity) entity).getActiveStatusEffects()
+									.containsKey(StatusEffects.NIGHT_VISION)) { // TODO
+																				// remove
+																				// night
+																				// vision
+																				// when
+																				// grues
+																				// are
+																				// entities
+						if (!entity.isSubmergedInWater()
+								|| PandoraConfig.gruesCanAttackInWater) {
+							if (!Arrays.asList(
+									PandoraConfig.blacklistedEntityType)
+									.contains(entity.getType())) {
+								if (mcSv.isHardcore()
+										&& (PandoraConfig.hardcoreAffectsOtherMobs
+												|| entity instanceof PlayerEntity)) {
+									entity.damage(CustomDamageSource.GRUE,
+											Float.MAX_VALUE);
+								} else {
+									entity.damage(CustomDamageSource.GRUE,
+											trueDamageAmount);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

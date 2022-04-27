@@ -1,4 +1,4 @@
- package pkg.deepCurse.curseBox.mixin.client;
+package pkg.deepCurse.pandora.mixin.client;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -9,12 +9,10 @@ import net.minecraft.client.gui.screen.TitleScreen;
 
 @Mixin(TitleScreen.class)
 public class TitleScreenMixin {
-	
+
 	@Inject(at = @At("HEAD"), method = "init()V")
 	private void init(CallbackInfo info) {
-		
-		
-		
+
 	}
-	
+
 }

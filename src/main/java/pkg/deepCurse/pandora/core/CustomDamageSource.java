@@ -1,10 +1,11 @@
-package pkg.deepCurse.curseBox.core;
+package pkg.deepCurse.pandora.core;
 
 import net.minecraft.entity.damage.DamageSource;
 
 public class CustomDamageSource extends DamageSource {
 	protected boolean fire;
-	public static final DamageSource GRUE = new CustomDamageSource("cursebox.darkness");
+	public static final DamageSource GRUE = new CustomDamageSource(
+			"cursebox.darkness");
 
 	protected CustomDamageSource(String name) {
 		super(name);

@@ -1,25 +1,25 @@
-package pkg.deepCurse.curseBox.core;
+package pkg.deepCurse.pandora.core;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import pkg.deepCurse.pandora.callbacks.EndServerTickCallback;
 
-public class CurseBox implements ModInitializer {
+public class Pandora implements ModInitializer {
 
 	public static boolean debug = true;
 
 	public static final Logger LOGGER = LogManager
-			.getLogger(CurseBox.class.getSimpleName());
+			.getLogger(Pandora.class.getSimpleName());
 
 	static {
-		LOGGER.info(debug ? "[cursebox] class init" : "");
-
-		CurseBoxConfig.loadConfig();
+		PandoraConfig.loadConfig();
 	}
 
 	@Override
-	public void onInitialize() {
+	public void onInitialize() { // TODO @ modify arg
 
 		if (debug) {
 			LOGGER.info(
@@ -27,6 +27,9 @@ public class CurseBox implements ModInitializer {
 		}
 
 		LOGGER.info("[cursebox] Initializing. . .");
+		ServerTickEvents.END_SERVER_TICK.register((MinecraftServer) -> {
+			EndServerTickCallback.onEndTick(MinecraftServer);
+		});
 		LOGGER.info("[cursebox] Loaded and ready. . .");
 
 	}
