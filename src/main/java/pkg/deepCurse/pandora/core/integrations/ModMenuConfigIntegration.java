@@ -1,7 +1,9 @@
 package pkg.deepCurse.pandora.core.integrations;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
+import com.google.common.collect.Lists;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
 
@@ -9,13 +11,16 @@ import grondag.darkness.Darkness;
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
+import me.shedaniel.clothconfig2.gui.entries.MultiElementListEntry;
+import me.shedaniel.clothconfig2.gui.entries.NestedListListEntry;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import pkg.deepCurse.pandora.core.Pandora;
 import pkg.deepCurse.pandora.core.PandoraConfig;
+import pkg.deepCurse.pandora.core.objects.Triplet;
 
-public class ModMenuIntegration implements ModMenuApi {
+public class ModMenuConfigIntegration implements ModMenuApi {
 
 	@Override
 	public ConfigScreenFactory<?> getModConfigScreenFactory() {
@@ -48,21 +53,17 @@ public class ModMenuIntegration implements ModMenuApi {
 				Darkness.enabled)
 				.setTooltip(new TranslatableText(
 						"pandora.config.menu.category.grondag.enable.grondag.darkness.tooltip"))
-				.setSaveConsumer(
-						newValue -> Darkness.enabled = newValue)
+				.setSaveConsumer(newValue -> Darkness.enabled = newValue)
 				.setYesNoTextSupplier((bool) -> {
 					return new TranslatableText(
 							bool ? "options.on" : "options.off");
 				}).setDefaultValue(true).build());
-		grondag.addEntry(entryBuilder
-				.startBooleanToggle(new TranslatableText(
-						"pandora.config.menu.category.grondag.enable.end.darkness"),
-						Darkness.darkEnd)
-				.setDefaultValue(false)
+		grondag.addEntry(entryBuilder.startBooleanToggle(new TranslatableText(
+				"pandora.config.menu.category.grondag.enable.end.darkness"),
+				Darkness.darkEnd).setDefaultValue(false)
 				.setTooltip(new TranslatableText(
 						"pandora.config.menu.category.grondag.enable.end.darkness.tooltip"))
-				.setSaveConsumer(
-						newValue -> Darkness.darkEnd= newValue)
+				.setSaveConsumer(newValue -> Darkness.darkEnd = newValue)
 				.setYesNoTextSupplier((bool) -> {
 					return new TranslatableText(
 							bool ? "options.on" : "options.off");
@@ -72,8 +73,7 @@ public class ModMenuIntegration implements ModMenuApi {
 				Darkness.darkNether).setDefaultValue(true)
 				.setTooltip(new TranslatableText(
 						"pandora.config.menu.category.grondag.enable.nether.darkness.tooltip"))
-				.setSaveConsumer(
-						newValue -> Darkness.darkNether = newValue)
+				.setSaveConsumer(newValue -> Darkness.darkNether = newValue)
 				.setYesNoTextSupplier((bool) -> {
 					return new TranslatableText(
 							bool ? "options.on" : "options.off");
@@ -83,8 +83,7 @@ public class ModMenuIntegration implements ModMenuApi {
 				Darkness.darkOverworld)
 				.setTooltip(new TranslatableText(
 						"pandora.config.menu.category.grondag.enable.overworld.darkness.tooltip"))
-				.setSaveConsumer(
-						newValue -> Darkness.darkOverworld = newValue)
+				.setSaveConsumer(newValue -> Darkness.darkOverworld = newValue)
 				.setYesNoTextSupplier((bool) -> {
 					return new TranslatableText(
 							bool ? "options.on" : "options.off");
@@ -100,9 +99,102 @@ public class ModMenuIntegration implements ModMenuApi {
 					return new TranslatableText(
 							bool ? "options.on" : "options.off");
 				}).setDefaultValue(true).build());
-		
-		// #############################################################################
-		
+
+		grondag.addEntry(entryBuilder
+				.startDoubleField(new TranslatableText(
+						"pandora.config.menu.category.grondag.dark.end"),
+						Darkness.darkEndFogConfigured)
+				.setMin(0.0F).setMax(1.0F)
+				.setTooltip(new TranslatableText(
+						"pandora.config.menu.category.grondag.dark.end.tooltip"))
+				.setSaveConsumer(
+						newValue -> Darkness.darkEndFogConfigured = newValue)
+				.build()); // TODO check tooltip array for multi line
+
+		grondag.addEntry(entryBuilder
+				.startDoubleField(new TranslatableText(
+						"pandora.config.menu.category.grondag.dark.nether"),
+						Darkness.darkNetherFogConfigured)
+				.setMin(0.0F).setMax(1.0F)
+				.setTooltip(new TranslatableText(
+						"pandora.config.menu.category.grondag.dark.nether.tooltip"))
+				.setSaveConsumer(
+						newValue -> Darkness.darkNetherFogConfigured = newValue)
+				.build());
+
+		grondag.addEntry(entryBuilder.startBooleanToggle(new TranslatableText(
+				"pandora.config.menu.category.grondag.ignore.moon.phase"),
+				Darkness.ignoreMoonPhase)
+				.setTooltip(new TranslatableText(
+						"pandora.config.menu.category.grondag.ignore.moon.phase.tooltip"))
+				.setSaveConsumer(
+						newValue -> Darkness.ignoreMoonPhase = newValue)
+				.setYesNoTextSupplier((bool) -> {
+					return new TranslatableText(
+							bool ? "options.on" : "options.off");
+				}).setDefaultValue(true).build());
+		grondag.addEntry(entryBuilder.startBooleanToggle(new TranslatableText(
+				"pandora.config.menu.category.grondag.only.affect.block.light"),
+				Darkness.blockLightOnly)
+				.setTooltip(new TranslatableText(
+						"pandora.config.menu.category.grondag.only.affect.block.light.tooltip"))
+				.setSaveConsumer(newValue -> Darkness.blockLightOnly = newValue)
+				.setYesNoTextSupplier((bool) -> {
+					return new TranslatableText(
+							bool ? "options.on" : "options.off");
+				}).setDefaultValue(true).build());
+
+//		grondag.addEntry(
+//				new NestedListListEntry<Object[], MultiElementListEntry<Object[]>>(
+//						new TranslatableText("EEE"),
+//						PandoraConfig.dimensionTriplets, true, Optional::empty,
+//						(val) -> PandoraConfig.dimensionTriplets = val,
+//						() -> Lists.newArrayList(),
+//						new TranslatableText("Reset"), true, true,
+//						(elem, nestedEntry) -> {
+//
+//							if (elem == null) {
+//								return new MultiElementListEntry<Object[]>(
+//										new TranslatableText("Dimension"), elem,
+//										Lists.newArrayList(
+//												entryBuilder.startStrField(
+//														new TranslatableText(
+//																"Dimension ID"),
+//														"minecraft:overworld")
+//														.build(),
+//												entryBuilder.startBooleanToggle(
+//														new TranslatableText(
+//																"Is Enabled"),
+//														true).build(),
+//												entryBuilder.startDoubleField(
+//														new TranslatableText(
+//																"Intensity"),
+//														1.0).build()),
+//										true);
+//							} else
+//
+//								return new MultiElementListEntry<Object[]>(
+//										new TranslatableText("Dimension"), elem,
+//										Lists.newArrayList(
+//												entryBuilder.startStrField(
+//														new TranslatableText(
+//																""),
+//														(String) elem[0])
+//														.build(),
+//												entryBuilder.startBooleanToggle(
+//														new TranslatableText(
+//																""),
+//														(boolean) elem[1])
+//														.build(),
+//												entryBuilder.startDoubleField(
+//														new TranslatableText(
+//																""),
+//														(double) elem[2])
+//														.build()),
+//										true);
+//
+//						}));
+
 		grues.addEntry(entryBuilder.startBooleanToggle(new TranslatableText(
 				"pandora.config.menu.category.grues.grues.can.eat.items"),
 				PandoraConfig.gruesCanEatItems).setDefaultValue(true)

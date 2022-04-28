@@ -22,20 +22,20 @@ public class PandoraLightDictionary {
 	public static int smoker = cookingBlock;
 	public static int blastFurnace = cookingBlock;
 
-	// soul
+	// SOUL
 	public static int soulFire = 14;
 	public static int soulTorch = soulFire;
 	public static int soulWallTorch = soulTorch;
 	public static int soulLantern = soulTorch - 3;
 	public static int soulCampfire = soulFire + 3;
 
-	// redstone
+	// REDSTONE
 	public static int redstoneOre = redstoneBlock;
 	public static int redstoneTorch = 0;
 	public static int redstoneWallTorch = redstoneTorch;
 	public static int redstoneLamp = 0;
 
-	// low grade magic
+	// LOW GRADE MAGIC
 	public static int glowstone = 0;
 	public static int netherPortal = 0;
 	public static int brewingStand = 0;
@@ -49,7 +49,7 @@ public class PandoraLightDictionary {
 	public static int mediumAmethystBud = 0;
 	public static int smallAmethystBud = 0;
 
-	// high grade magic
+	// HIGH GRADE MAGIC
 	public static int enchantingTable = 0;
 	public static int endPortal = 0;
 	public static int endPortalFrame = 0;
@@ -59,7 +59,7 @@ public class PandoraLightDictionary {
 	public static int light = 0;
 	public static int beacon = 0;
 
-	// glowing plants
+	// GLOWING PLANTS
 	public static int glowLichen = 0; // SHEARS
 	public static int caveVines = 0;
 	public static int caveVinesPlant = 0;

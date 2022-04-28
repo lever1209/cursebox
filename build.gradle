@@ -32,7 +32,8 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 	// modImplementation name: "lambdynamiclights"
-	// modImplementation name: "darkness-2.0.89-curse"
+	modImplementation name: "darkness-2.0.89-curse"
+	// modRuntimeOnly name: "darkness-2.0.89-curse"
 	modImplementation "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}"
 	
 	implementation "org.slf4j:slf4j-simple:${project.slf4j_simple_version}"
