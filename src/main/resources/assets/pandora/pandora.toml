@@ -54,6 +54,7 @@
 	# this number is tuned for max gamma, darkness/custom fog enabled
 	grueAttackLightLevelMaximum = 2
 	
+	# Items you can hold to become mostly immune to grues
 	grueWards= []
 	
 # Settings that change the behavior of the darkness, and whatevers in it
@@ -68,6 +69,7 @@
 	# Should hostile mobs fear darkness (default: false)
 	hostileMobsFearDarkness = false
 	
+# Settings to do with how Pandora will modify in game gamma settings
 [gamma]
 	
 	# Should Pandora lock your gamma to the next value (default: true)

@@ -1,2 +1,2 @@
-# cursebox
-like quark but for lighting and extra easily configurable options
+# Pandora
+The darkness kills. . .

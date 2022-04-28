@@ -29,10 +29,10 @@ public class EndServerTickCallback {
 		cooldownManager.update();
 		Iterator<ServerWorld> worlds = mcSv.getWorlds().iterator();
 		while (worlds.hasNext()) {
-			ServerWorld world = (ServerWorld) worlds.next();
+			ServerWorld world = worlds.next();
 			Iterator<Entity> entities = world.iterateEntities().iterator();
 			while (entities.hasNext()) {
-				Entity entity = (Entity) entities.next();
+				Entity entity = entities.next();
 
 				if (!cooldownManager.isCoolingDown(entity)) {
 					doDarknessDamage(entity, 0.0F, world, mcSv);

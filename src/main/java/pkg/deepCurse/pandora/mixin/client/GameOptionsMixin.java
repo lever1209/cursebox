@@ -18,7 +18,7 @@ public class GameOptionsMixin {
 	@Inject(method = {"load"}, at = {@At("RETURN")})
 	private void pandoraOptions$load(CallbackInfo ci) {
 		if (PandoraConfig.resetGamma) {
-			this.gamma = PandoraConfig.defaultGammaValue;
+			this.gamma = PandoraConfig.resetGammaValue;
 		}
 	}
 }

@@ -1,14 +1,24 @@
 package pkg.deepCurse.pandora.core;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
 
+import grondag.darkness.Darkness;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class PandoraConfig {
+
+	private static Logger logger = LoggerFactory.getLogger(PandoraConfig.class);
 
 	public static File getConfigFile() {
 		return new File(FabricLoader.getInstance().getConfigDir().toFile(),
@@ -16,14 +26,14 @@ public class PandoraConfig {
 	}
 
 	public static CommentedFileConfig config = CommentedFileConfig
-			.builder(getConfigFile()).autosave()
+			.builder(getConfigFile()).autosave().preserveInsertionOrder()
 			.defaultResource("/assets/pandora/pandora.toml").build();
 
 	// integration
 	public static boolean lambDynLightsIsPresent = FabricLoader.getInstance()
 			.isModLoaded("lambdynlights");
 	// grondags darkness
-	public static boolean enableCustomFog;
+	public static boolean enabled;
 	public static boolean enableEndFog;
 	public static boolean enableNetherFog;
 	public static boolean enableOverworldFog;
@@ -44,7 +54,8 @@ public class PandoraConfig {
 	public static boolean hostileMobsFearDarkness;
 	// gamma
 	public static boolean resetGamma;
-	public static double defaultGammaValue = config.getOrElse("darkness.defaultGammaValue", 1.0);
+	public static double resetGammaValue = config
+			.getOrElse("darkness.defaultGammaValue", 1.0);
 	// debug
 	public static boolean accelerateTorchDeath;
 	public static boolean resetGrueAttackChance;
@@ -57,10 +68,10 @@ public class PandoraConfig {
 		config.load();
 
 		// grondag.fog
-		enableCustomFog = config.getOrElse("grondag.fog.enableCustomFog", true);
-		enableEndFog = config.getOrElse("grondag.fog.enableEndFog", false);
-		enableNetherFog = config.getOrElse("grondag.fog.enableNetherFog", true);
-		enableOverworldFog = config.getOrElse("grondag.fog.enableOverworldFog",
+		Darkness.enabled = config.getOrElse("grondag.fog.enableCustomFog", true);
+		Darkness.darkEnd= config.getOrElse("grondag.fog.enableEndFog", false);
+		Darkness.darkNether = config.getOrElse("grondag.fog.enableNetherFog", true);
+		Darkness.darkOverworld = config.getOrElse("grondag.fog.enableOverworldFog",
 				true);
 		// grues
 		gruesCanEatItems = config.getOrElse("grues.gruesCanEatItems", true);
@@ -93,7 +104,7 @@ public class PandoraConfig {
 				.getOrElse("darkness.hostileMobsFearDarkness", false);
 		// gamma
 		resetGamma = config.getOrElse("darkness.resetGamma", true);
-		defaultGammaValue = config.getOrElse("darkness.defaultGammaValue", 1.0);
+		resetGammaValue = config.getOrElse("darkness.defaultGammaValue", 1.0);
 	}
 
 	public static boolean isDynamicLightingEnabled() {
@@ -102,240 +113,96 @@ public class PandoraConfig {
 
 	public static void saveConfigs() {
 
+		config.setComment("grondag",
+				"# Pandora TOML config\n\n# Settings used by Grondags True Darkness (https://github.com/grondag/darkness)\n# The version bundled with Pandora is modified, and can be obtained from (https://github.com/lever1209/darkness)");
+		config.setComment("grondag.fog", " Fog options");
+		config.setComment("grondag.fog.enableCustomFog",
+				" Enables all custom fog used by Darkness (default: true)");
+		config.set("grondag.fog.enableCustomFog", enabled);
+		config.setComment("grondag.fog.enableEndFog",
+				" Enables custom fog in the End (default: false)");
+		config.set("grondag.fog.enableEndFog", enableEndFog);
+		config.setComment("grondag.fog.enableNetherFog",
+				" Enables custom fog in the Nether (default: true)");
+		config.set("grondag.fog.enableNetherFog", enableNetherFog);
+		config.setComment("grondag.fog.enableOverworldFog",
+				" Enables custom fog in the Overworld (default: true)");
+		config.set("grondag.fog.enableOverworldFog", enableOverworldFog);
+		config.setComment("grues",
+				" Settings relating to the looming threat in the darkness");
+		config.setComment("grues.gruesCanEatItems",
+				" The chances a grue will eat an item on the ground (default: true)");
+		config.set("grues.gruesCanEatItems", gruesCanEatItems);
+		config.setComment("grues.gruesOnlyAttackPlayers",
+				" Will grues only target players (default: false)");
+		config.set("grues.gruesOnlyAttackPlayers", gruesOnlyAttackPlayers);
+		config.setComment("grues.gruesCanAttackAnimals",
+				" Can grues attack Animals/Passive Entities (default: false)");
+		config.set("grues.gruesCanAttackAnimals", gruesCanAttackAnimals);
+		config.setComment("grues.gruesCanAttackVillagers",
+				" Can grues attack villagers (default: true)");
+		config.set("grues.gruesCanAttackVillagers", gruesCanAttackVillagers);
+		config.setComment("grues.gruesCanAttackHostileMobs",
+				" Can grues attack hostile mobs excluding bosses (default: false)");
+		config.set("grues.gruesCanAttackHostileMobs",
+				gruesCanAttackHostileMobs);
+		config.setComment("grues.gruesCanAttackBossMobs",
+				" Can grues attack boss monsters (default: false)");
+		config.set("grues.gruesCanAttackBossMobs", gruesCanAttackBossMobs);
+		config.setComment("grues.gruesCanAttackInWater",
+				" Can grues attack you or any other mob in water (default: false)\n Exploring anything under water becomes almost impossible because water source blocks suck up light\n I recommend leaving this at false");
+		config.set("grues.gruesCanAttackInWater", gruesCanAttackInWater);
+		config.setComment("grues.hardcoreAffectsOtherMobs", " Can hardcore mode effect other mobs (default: false) Hardcore mode deals 8 damage about every 4 seconds, thats a heart a second regardless of armor type\n I recommend leaving this at false unless you are very familliar with this mod, or have a cheat light source");
+		config.set("grues.hardcoreAffectsOtherMobs", hardcoreAffectsOtherMobs);
+		config.setComment("grues.grueAttackLightLevelMaximum", " The maximum light level a grue needs to attack you (default: 2)\n this number is tuned for max gamma, darkness/custom fog enabled");
+		config.set("grues.grueAttackLightLevelMaximum",
+				grueAttackLightLevelMaximum);
+		config.setComment("grues.grueWards", " Items you can hold to become mostly immune to grues");
 		config.set("grues.grueWards", grueWards);
+		config.setComment("darkness", " Settings that change the behavior of the darkness, and whatevers in it");
+		config.setComment("darkness.villagersFearDarkness", " Should villagers fear darkness (default: true)");
+		config.set("darkness.villagersFearDarkness", villagersFearDarkness);
+		config.setComment("darkness.animalsFearDarkness", " Should Animals/Passive mobs fear darkness (default: false)");
+		config.set("darkness.animalsFearDarkness", animalsFearDarkness);
+		config.setComment("darkness.hostileMobsFearDarkness", " Should hostile mobs fear darkness (default: false)");
+		config.set("darkness.hostileMobsFearDarkness", hostileMobsFearDarkness);
+		config.setComment("gamma", " Settings to do with how Pandora will modify in game gamma settings");
+		config.setComment("gamma.resetGamma", " Should Pandora lock your gamma to the next value (default: true)\n This is recommended to be left at default");
+		config.set("gamma.resetGamma", resetGamma);
+		config.setComment("gamma.defaultGammaValue", "The default gamma value if resetGamma is true, max value is 1.0 (default: 1.0)");
+		config.set("gamma.defaultGammaValue", resetGammaValue);
 
 		config.save();
 	}
 
 	public static void newConfig() {
 		config = CommentedFileConfig.builder(getConfigFile()).autosave()
-				.defaultResource("/assets/pandora/pandora.toml")
 				.preserveInsertionOrder().build();
 	}
 
-}
+	public static void unpackageConfig() throws IOException {
+		logger.info("upackaging config");
 
-// package pkg.deepCurse.pandora.core;
-//
-// import java.io.File;
-// import java.util.Arrays;
-// import java.util.HashMap;
-//
-// import com.electronwill.nightconfig.core.file.CommentedFileConfig;
-//
-// import net.fabricmc.loader.api.FabricLoader;
-// import net.minecraft.entity.EntityType;
-// import net.minecraft.item.Item;
-// import net.minecraft.item.Items;
-// import net.minecraft.util.Identifier;
-//
-// public class PandoraConfig {
-//
-// public static File getConfigFile() {
-// return new File(FabricLoader.getInstance().getConfigDir().toFile(),
-// "pandora.toml");
-// }
-//
-// public static CommentedFileConfig config = CommentedFileConfig
-// .builder(getConfigFile()).autosave()
-// .defaultResource("/assets/pandora/pandora.toml")
-// .preserveInsertionOrder().build();
-//
-// public static boolean lambDynLightsIsPresent = FabricLoader.getInstance()
-// .isModLoaded("lambdynlights");
-//
-// /**
-// * <pre>
-// * GRONDAGS DARKNESS
-// * public static boolean enableCustomFog;
-// * public static boolean enableEndFog;
-// * public static boolean enableNetherFog;
-// * public static boolean enableOverworldFog;
-// * GRUES
-// * public static boolean gruesCanEatItems;
-// * public static boolean gruesOnlyAttackPlayers;
-// * public static boolean gruesCanAttackAnimals;
-// * public static boolean gruesCanAttackVillagers;
-// * public static boolean gruesCanAttackHostileMobs;
-// * public static boolean gruesCanAttackBossMobs;
-// * public static boolean gruesCanAttackInWater;
-// * public static boolean hardcoreAffectsOtherMobs;
-// * public static int grueAttackLightLevelMaximum;
-// * DARKNESS
-// * public static boolean villagersFearDarkness;
-// * public static boolean passiveFearDarkness;
-// * public static boolean hostileMobsFearDarkness;
-// * GAMMA
-// * public static boolean resetGamma;
-// * public static double defaultGammaValue;
-// * DEBUG
-// * public static boolean accelerateTorchDeath;
-// * public static boolean resetGrueAttackChance;
-// * </pre>
-// */
-// private static HashMap<String, Object> configMap = new HashMap<>();
-// /**
-// * valid keys are:
-// *
-// * <pre>
-// * MOD DETECTION :
-// * bool : lambDynLightsIsPresent
-// *
-// * DEBUG VALUES :
-// *
-// * bool : resetGrueAttackChance
-// * bool : accelerateTorchDeath
-// *
-// * TOML CONFIG :
-// *
-// * bool : enableCustomFog
-// * bool : enableEndFog
-// * bool : enableNetherFog
-// * bool : enableOverworldFog
-// * bool : gruesCanEatItems
-// * bool : gruesOnlyAttackPlayers
-// * bool : gruesCanAttackAnimals
-// * bool : gruesCanAttackVillagers
-// * bool : gruesCanAttackHostileMobs
-// * bool : gruesCanAttackBossMobs
-// * bool : gruesCanAttackInWater
-// * bool : hardcoreAffectsOtherMobs
-// * int : grueAttackLightLevelMaximum
-// * bool : villagersFearDarkness
-// * bool : passiveFearDarkness
-// * bool : hostileMobsFearDarkness
-// * bool : resetGamma
-// * double : defaultGammaValue
-// * Identifier[] : grueWards
-// * Identifier[] : blacklistedEntityType
-// * </pre>
-// */
-// public static void setConfigValue(String key, Object b) {
-// if (key.startsWith("F$") && key.contains(key)) {
-// throw new IllegalStateException("[cursebox] Key: " + key
-// + " is final, and may not be changed after it is set. . .");
-// }
-// configMap.put(key, b);
-// }
-//
-// public static <T> T getConfigValue(String key) {
-// try {
-// if (!configMap.containsKey(key)) {
-// return null;
-// }
-// return (T) configMap.get(key);
-// } catch (Exception e) {
-// return null;
-// }
-// }
-//
-// public static void loadConfig() {
-//
-// config.load();
-//
-// // grondag.fog
-// setConfigValue("grondag.fog.enableCustomFog",
-// config.getOrElse("grondag.fog.enableCustomFog", true));
-// setConfigValue("grondag.fog.enableEndFog",
-// config.getOrElse("grondag.fog.enableEndFog", false));
-// setConfigValue("grondag.fog.enableNetherFog",
-// config.getOrElse("grondag.fog.enableNetherFog", true));
-// setConfigValue("grondag.fog.enableOverworldFog",
-// config.getOrElse("grondag.fog.enableOverworldFog", true));
-// // grues
-// setConfigValue("grues.gruesCanEatItems",
-// config.getOrElse("grues.gruesCanEatItems", true));
-// setConfigValue("grues.gruesOnlyAttackPlayers",
-// config.getOrElse("grues.gruesOnlyAttackPlayers", true));
-// setConfigValue("grues.gruesCanAttackAnimals",
-// config.getOrElse("grues.gruesCanAttackAnimals", false));
-// setConfigValue("grues.gruesCanAttackVillagers",
-// config.getOrElse("grues.gruesCanAttackVillagers", true));
-// setConfigValue("grues.gruesCanAttackHostileMobs",
-// config.getOrElse("grues.gruesCanAttackHostileMobs", false));
-// setConfigValue("grues.gruesCanAttackBossMobs",
-// config.getOrElse("grues.gruesCanAttackBossMobs", false));
-// setConfigValue("grues.gruesCanAttackInWater",
-// config.getOrElse("grues.gruesCanAttackInWater", false));
-// setConfigValue("grues.hardcoreAffectsOtherMobs",
-// config.getOrElse("grues.hardcoreAffectsOtherMobs", false));
-// setConfigValue("grues.grueAttackLightLevelMaximum",
-// config.getOrElse("grues.grueAttackLightLevelMaximum", 2));
-// // darkness
-// setConfigValue("darkness.villagersFearDarkness",
-// config.getOrElse("darkness.villagersFearDarkness", true));
-// setConfigValue("darkness.passiveFearDarkness",
-// config.getOrElse("darkness.passiveFearDarkness", false));
-// setConfigValue("darkness.hostileMobsFearDarkness",
-// config.getOrElse("darkness.hostileMobsFearDarkness", false));
-// // gamma
-// setConfigValue("gamma.resetGamma",
-// config.getOrElse("darkness.resetGamma", true));
-// setConfigValue("gamma.defaultGammaValue",
-// config.getOrElse("darkness.defaultGammaValue", 1.0));
-// }
-// // public static void loadConfig() {
-// //
-// // config.load();
-// //
-// // // fog
-// // enableCustomFog = config.getOrElse(
-// // Arrays.asList(new String[]{"fog", "enableCustomFog"}), true);
-// // enableEndFog = config.getOrElse("fog.enableEndFog", false);
-// // enableNetherFog = config.getOrElse("fog.enableNetherFog", true);
-// // enableOverworldFog = config.getOrElse("fog.enableOverworldFog", true);
-// // // grues
-// // gruesCanEatItems = config.getOrElse("grues.gruesCanEatItems", true);
-// // gruesOnlyAttackPlayers = config
-// // .getOrElse("grues.gruesOnlyAttackPlayers", true);
-// // gruesCanAttackAnimals = config.getOrElse("grues.gruesCanAttackAnimals",
-// // false);
-// // gruesCanAttackVillagers = config
-// // .getOrElse("grues.gruesCanAttackVillagers", true);
-// // gruesCanAttackHostileMobs = config
-// // .getOrElse("grues.gruesCanAttackHostileMobs", false);
-// // gruesCanAttackBossMobs = config
-// // .getOrElse("grues.gruesCanAttackBossMobs", false);
-// // gruesCanAttackInWater = config.getOrElse("grues.gruesCanAttackInWater",
-// // false);
-// // hardcoreAffectsOtherMobs = config
-// // .getOrElse("grues.hardcoreAffectsOtherMobs", false);
-// // grueAttackLightLevelMaximum = config
-// // .getOrElse("grues.grueAttackLightLevelMaximum", 2);
-// // grueWards = config.getOrElse("grues.grueWards",
-// // new Identifier[]{new Identifier("minecraft:torch"),
-// // new Identifier("minecraft:soul_torch")});
-// // blacklistedEntityType = config.getOrElse("grues.blacklistedEntityType",
-// // new Identifier[]{new Identifier("minecraft:ender_dragon")});
-// // // darkness
-// // villagersFearDarkness = config
-// // .getOrElse("darkness.villagersFearDarkness", true);
-// // passiveFearDarkness = config.getOrElse("darkness.passiveFearDarkness",
-// // false);
-// // hostileMobsFearDarkness = config
-// // .getOrElse("darkness.hostileMobsFearDarkness", false);
-// // // gamma
-// // resetGamma = config.getOrElse("darkness.resetGamma", true);
-// // defaultGammaValue = config.getOrElse("darkness.defaultGammaValue", 1.0);
-// // }
-//
-// public static boolean isDynamicLightingEnabled() {
-// return lambDynLightsIsPresent;
-// }
-//
-// public static void saveConfigs() {
-//
-// for (String i : configMap.keySet()) {
-// config.set(i, getConfigValue(i));
-// }
-//
-// config.save();
-// }
-//
-// public static void newConfig() {
-// config = CommentedFileConfig.builder(getConfigFile()).autosave()
-// .defaultResource("/assets/pandora/pandora.toml")
-// .preserveInsertionOrder().build();
-// }
-//
-// }
+		FileWriter writer = new FileWriter(getConfigFile());
+		BufferedReader reader = new BufferedReader(
+				new InputStreamReader(PandoraConfig.class
+						.getResourceAsStream("/assets/pandora/pandora.toml")));
+
+		for (int t; (t = reader.read()) != -1;) {
+			writer.write(t);
+		}
+
+		writer.close();
+		reader.close();
+	}
+
+	public static boolean deleteConfig() {
+		try {
+			getConfigFile().delete();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+}

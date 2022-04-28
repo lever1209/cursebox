@@ -9,7 +9,8 @@
 	"client": [
 		"client.TitleScreenMixin",
 		"integrations.LambDynLightsIntegration",
-		"client.GameOptionsMixin"
+		"client.GameOptionsMixin",
+		"client.OptionsScreenMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
