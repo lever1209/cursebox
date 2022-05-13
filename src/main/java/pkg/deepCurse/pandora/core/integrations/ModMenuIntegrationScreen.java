@@ -1,12 +1,8 @@
 package pkg.deepCurse.pandora.core.integrations;
 
-import java.io.IOException;
-import java.nio.file.Files;
-
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.render.Tessellator;
@@ -15,8 +11,6 @@ import net.minecraft.client.render.VertexFormats;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
-import pkg.deepCurse.pandora.core.Pandora;
-import pkg.deepCurse.pandora.core.PandoraConfig;
 
 public class ModMenuIntegrationScreen extends Screen {
 	Screen parent;
@@ -27,15 +21,15 @@ public class ModMenuIntegrationScreen extends Screen {
 	}
 	@Override
 	protected void init() {
-//		this.addDrawableChild(new ButtonWidget(0, 0, 49, 10,
-//				new TranslatableText("pandora.menu.return"), (buttonWidget) -> {
-//					if (Pandora.debug) {
-//						Pandora.LOGGER
-//								.info("Config menu return button is pressed");
-//					}
-//
-//					this.client.setScreen(this.parent);
-//				}));
+		// this.addDrawableChild(new ButtonWidget(0, 0, 49, 10,
+		// new TranslatableText("pandora.menu.return"), (buttonWidget) -> {
+		// if (Pandora.debug) {
+		// Pandora.LOGGER
+		// .info("Config menu return button is pressed");
+		// }
+		//
+		// this.client.setScreen(this.parent);
+		// }));
 	}
 
 	@Override

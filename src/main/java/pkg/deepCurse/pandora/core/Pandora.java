@@ -18,7 +18,7 @@ public class Pandora implements ModInitializer {
 	}
 
 	@Override
-	public void onInitialize() { // TODO @ modify arg
+	public void onInitialize() {
 
 		if (debug) {
 			LOGGER.info(

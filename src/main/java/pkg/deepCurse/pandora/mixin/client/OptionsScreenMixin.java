@@ -16,7 +16,7 @@ import pkg.deepCurse.pandora.core.DebugScreen;
 
 @Mixin(OptionsScreen.class)
 public class OptionsScreenMixin extends Screen {
-	
+
 	protected OptionsScreenMixin() {
 		super(null);
 	}
@@ -31,8 +31,7 @@ public class OptionsScreenMixin extends Screen {
 		logger.info("init");
 		this.addDrawableChild(new ButtonWidget(4, 4, 20, 20,
 				new TranslatableText("pandora.menu.debug.button"),
-				button -> this.client
-						.setScreen(new DebugScreen(this))));
+				button -> this.client.setScreen(new DebugScreen(this))));
 	}
 
 }

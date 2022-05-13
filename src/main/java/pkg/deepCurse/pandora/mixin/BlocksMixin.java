@@ -23,7 +23,13 @@ public class BlocksMixin {
 			ToIntFunction<BlockState> oldVal) {
 		return blockstate -> PandoraLightDictionary.brownMushroom;
 	}
-	@ModifyArg(slice = @Slice(from = @At(value = "CONSTANT", args = "stringValue=torch")), method = "<clinit>", at = @At(value = "INVOKE", target = "Lnet/minecraft/block/AbstractBlock$Settings;luminance(Ljava/util/function/ToIntFunction;)Lnet/minecraft/block/AbstractBlock$Settings;", ordinal = 0), index = 0)
+	@ModifyArg(slice = @Slice(from = @At(value = "CONSTANT",
+				args = "stringValue=torch")),
+			method = "<clinit>",
+			at = @At(value = "INVOKE",
+				target = "Lnet/minecraft/block/AbstractBlock$Settings;luminance(Ljava/util/function/ToIntFunction;)Lnet/minecraft/block/AbstractBlock$Settings;",
+				ordinal = 0),
+			index = 0)
 	private static ToIntFunction<BlockState> changeLuminenceOfTorchBlock(
 			ToIntFunction<BlockState> oldVal) {
 		return blockstate -> PandoraLightDictionary.torch;

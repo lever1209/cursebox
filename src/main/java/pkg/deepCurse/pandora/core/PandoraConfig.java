@@ -13,9 +13,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.electronwill.nightconfig.core.file.CommentedFileConfig;
+import com.google.common.collect.Lists;
 
 import grondag.darkness.Darkness;
+import grondag.darkness.DimensionConfigInfoObject;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.util.Identifier;
 
 public class PandoraConfig {
 
@@ -64,7 +67,9 @@ public class PandoraConfig {
 	public static List<String> grueWards;
 	public static List<String> blacklistedEntityType;
 
-//	public static List<Object[]> dimensionTriplets = new ArrayList<>();
+	public static boolean ignoreMoonPhase;
+
+	public static boolean blockLightOnly;
 
 	public static void loadConfig() {
 
@@ -79,12 +84,16 @@ public class PandoraConfig {
 		Darkness.darkOverworld = config
 				.getOrElse("grondag.fog.enableOverworldFog", true);
 
-//		String[][] results = config.getOrElse("grondag.dimensions",
-//				new String[][]{});
-//
-//		for (Object[] i : results) {
-//			dimensionTriplets.add(new Object[]{i[0], i[1], i[2]});
-//		}
+		// ArrayList<String[]> e = new ArrayList<>();
+		// e.add(new String[]{"d", "true", "0.0"});
+		// Darkness.dimensions = config.getOrElse("grondag.dimensions", e);
+
+		// String[][] results = config.getOrElse("grondag.dimensions",
+		// new String[][]{});
+		//
+		// for (Object[] i : results) {
+		// dimensionTriplets.add(new Object[]{i[0], i[1], i[2]});
+		// }
 
 		// grues
 		gruesCanEatItems = config.getOrElse("grues.gruesCanEatItems", true);
@@ -118,6 +127,7 @@ public class PandoraConfig {
 		// gamma
 		resetGamma = config.getOrElse("darkness.resetGamma", true);
 		resetGammaValue = config.getOrElse("darkness.defaultGammaValue", 1.0);
+		
 	}
 
 	public static boolean isDynamicLightingEnabled() {
@@ -142,13 +152,11 @@ public class PandoraConfig {
 				" Enables custom fog in the Overworld (default: true)");
 		config.set("grondag.fog.enableOverworldFog", enableOverworldFog);
 
-//		List<Object[]> dimensions = new ArrayList<Object[]>();
-//
-//		for (Object[] i : dimensionTriplets) {
-//
-//			dimensions.add(new Object[]{i[0], i[1], i[2]});
-//		}
-//		config.set("grondag.dimensions", dimensions);
+		// config.set("grondag.dimensions",
+		// Darkness.dimensions == null
+		// ? Lists.newArrayList(new String[] {"minecraft:the_end", "true",
+		// "0.2"})
+		// : Darkness.dimensions);
 
 		config.setComment("grues",
 				" Settings relating to the looming threat in the darkness");
@@ -236,5 +244,27 @@ public class PandoraConfig {
 			return false;
 		}
 	}
+
+//	// public static List<String[]> getSimpleDimensionList() {
+//	public static List<DimensionConfigInfoObject> getSimpleDimensions() {
+//		// ArrayList<String[]> list = new ArrayList<String[]>();
+//		// for (Identifier i : Darkness.dimensionMap.keySet()) {
+//		// list.add(new String[]{i.toString(),
+//		// String.valueOf(Darkness.dimensionMap.get(i)[0]),
+//		// String.valueOf(Darkness.dimensionMap.get(i)[1])});
+//		// }
+//		return Lists.newArrayList(Darkness.dimensionMap.values());
+//	}
+
+//	public static void saveSimpleDimensionList(
+//			List<DimensionConfigInfoObject> list) {
+//		Darkness.dimensionMap.clear();
+//		for (DimensionConfigInfoObject i : list) {
+//			if (i != null) {
+//				Darkness.dimensionMap.put(i.getIdentifier(), i);
+//			} else
+//				logger.info("null");
+//		}
+//	}
 
 }
