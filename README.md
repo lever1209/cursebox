@@ -1,2 +1,0 @@
-# Pandora
-The darkness kills. . .
