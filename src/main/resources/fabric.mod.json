@@ -1,38 +1,38 @@
 {
-  "schemaVersion": 1,
-  "id": "cursebox",
-  "version": "${version}",
-
-  "name": "Curse Box",
-  "description": "This mod is the core of my custom mod modpack",
-  "authors": [
-    "deepCurse"
-  ],
-  "contact": {
-    "homepage": "https://github.com/lever1209/cursebox",
-    "sources": "https://github.com/lever1209/cursebox"
-  },
-
-  "license": "BSD-3",
-  "icon": "assets/cursebox/icon.png",
-
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-      "pkg.deepCurse.curseBox.core.Core"
-    ]
-  },
-  "mixins": [
-    "cursebox.mixins.json"
-  ],
-
-  "depends": {
-    "fabricloader": ">=0.11.3",
-    "fabric": "*",
-    "minecraft": "1.16.5",
-    "java": ">=16"
-  },
-  "suggests": {
-    "modmenu": "*"
-  }
+	"schemaVersion": 1,
+	"id": "pandora",
+	"version": "${version}",
+	"name": "Pandora",
+	"description": "",
+	"authors": [
+		"deepCurse"
+	],
+	"contact": {
+		"homepage": "https://github.com/lever1209/pandora",
+		"sources": "https://github.com/lever1209/pandora"
+	},
+	"license": "BSD-3",
+	"icon": "assets/pandora/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"pkg.deepCurse.pandora.core.Pandora"
+		],
+		"modmenu": [
+			"pkg.deepCurse.pandora.core.integrations.ModMenuConfigIntegration"
+		]
+	},
+	"mixins": [
+		"pandora.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.13.3",
+		"fabric": "*",
+		"minecraft": "1.18.2",
+		"java": ">=16"
+	},
+	"suggests": {
+		"modmenu": "*",
+		"lambdynlights":">=2.1.0"
+	}
 }
